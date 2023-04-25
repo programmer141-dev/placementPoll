@@ -1,5 +1,5 @@
 from django import forms
-from .models import Details
+from .models import Details, Years
 
 class DetailsForm(forms.ModelForm):
     class Meta:
@@ -19,3 +19,13 @@ class DetailsForm(forms.ModelForm):
         self.fields['placed'].help_text = 'Select "Yes" if you were placed in a campus recruitment drive.'
         self.fields['placed_on'].help_text = 'Enter the name of the company you were placed with, if applicable.'
         self.fields['package'].help_text = 'Enter the package you were offered in lakhs per annum, if applicable.'
+
+
+class yearForm(forms.ModelForm):
+    class Meta:
+        model = Years
+        fields = ('year',)
+    
+    def __init__ (self, *args, **kwargs):
+        super(yearForm, self).__init__(*args, **kwargs)
+        self.fields['year'].label = 'Select Year'

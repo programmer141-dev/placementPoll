@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Poll - Charts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins";
+            user-select: none;
+        }
+
+        :root {
+            --p: rgba(0, 0, 0, 0.8);
+            --s: #6d6fff;
+            --t: rgb(255, 46, 46);
+            --f: #56ff40;
+            --fv: #25ffbe;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .title {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 25px;
+            font-weight: 700;
+            height: 50px;
+        }
+
+        .charts-cont {
+            gap: 80px;
+            width: max-content;
+            height: max-content;
+            display: flex;
+        }
+
+        .chartCont {
+            width: max-content;
+            height: max-content;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-family: "Poppins";
+        }
+
+        .inner {
+            border-radius: 50%;
+            width: 80%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 13.5px;
+            gap: 5px;
+            background-color: white;
+        }
+
+        .label {
+            width: 400px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .colors {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .lab {
+            font-size: 12px;
+        }
+
+        .c-cont {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .col {
+            width: 15px;
+            height: 15px;
+            background-color: blue;
+        }
+
+        .p {
+            background-color: var(--p);
+        }
+
+        .s {
+            background-color: var(--s);
+        }
+
+        .t {
+            background-color: var(--t);
+        }
+
+        .f {
+            background-color: var(--f);
+        }
+
+        .fv {
+            background-color: var(--fv);
+        }
+
+        .c2 {
+            background-image: conic-gradient(var(--s) var(--a-start), var(--s) var(--a-end), var(--p) var(--b-start), var(--p) var(--b-end));
+        }
+
+        .c5 {
+            background-image: conic-gradient(var(--p) var(--a-start), var(--p) var(--a-end), var(--s) var(--b-start), var(--s) var(--b-end), var(--t) var(--c-start), var(--t) var(--c-end), var(--f) var(--d-start), var(--f) var(--d-end), var(--fv) var(--e-start), var(--fv) var(--e-end));
+        }
+
+        .inpCont {
+            width: max-content;
+            height: max-content;
+            display: flex;
+            position: absolute;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .lable {
+            margin-right: 10px;
+            font-family: "Poppins";
+        }
+
+        .btn {
+            width: max-content;
+            height: max-content;
+            cursor: pointer;
+            font-family: "Poppins";
+            font-size: 14px;
+            padding: 3px 10px;
+            margin-left: 15px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        @media only screen and (max-width: 1384px) {
+            .title {
+                width: 85%;
+                height: max-content;
+                position: initial;
+                text-align: center;
+                transform: translate(0);
+                margin-bottom: 20px;
+            }
+
+            .inpCont {
+                transform: translate(0);
+                position: initial;
+            }
+
+            .charts-cont {
+                margin-top: 60px;
+                flex-direction: column;
+            }
+
+            .container {
+                height: max-content;
+                padding: 40px 0;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p class="title">Analysis on Students (total - {{data.tot}} students)</p>
+        <form method="POST" action="{% url 'charts' %}" class="inpCont">
+            {% csrf_token %}
+            {% if form.errors %}
+            <ul>
+                {% for field in form %}
+                {% for error in field.errors %}
+                <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div>
+                <label class="lable" for="{{ form.year.id_for_label }}">Year:</label>
+                {{ form.year }}
+            </div>
+            <button class="btn" type="submit">View Data</button>
+        </form>
+        <div class="charts-cont">
+
+            <div class="chartCont">
+                <p class="label">Placed / Not Placed</p>
+                <div class="chart c2"
+                    style="--a-start:{{data.npt}}deg; --a-end:{{data.pt}}deg; --b-start:{{data.pt}}deg; --b-end:{{data.npt}}deg">
+                    <div class="inner">
+                        <p class="ilab">Placed : {{data.pc}} students</p>
+                        <p class="ilab">Not Placed : {{data.npc}} students</p>
+                    </div>
+                </div>
+                <div class="colors">
+                    <div class="c-cont">
+                        <div class="col s"></div>
+                        <p class="lab">Placed</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col p"></div>
+                        <p class="lab">Not Placed</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chartCont">
+                <p class="label">Core / It Software (Placed)</p>
+                <div class="chart c2"
+                    style="--a-start:{{data.it}}deg; --a-end:{{data.ct}}deg; --b-start:{{data.ct}}deg; --b-end:{{data.it}}deg">
+                    <div class="inner">
+                        <p class="ilab">Core : {{data.cc}} students</p>
+                        <p class="ilab">It Software : {{data.ic}} students</p>
+                    </div>
+                </div>
+                <div class="colors">
+                    <div class="c-cont">
+                        <div class="col s"></div>
+                        <p class="lab">Core</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col p"></div>
+                        <p class=" lab">IT(Software)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chartCont">
+                <p class="label">Salary (Placed)</p>
+                <div class="chart c5"
+                    style="--a-start:0deg; --a-end:{{sdata.l26pt}}deg; --b-start:{{sdata.l26pt}}deg; --b-end:{{sdata.l612pt}}deg; --c-start:{{sdata.l612pt}}deg; --c-end:{{sdata.l128pt}}deg; --d-start:{{sdata.l128pt}}deg; --d-end:{{sdata.l184pt}}deg; --e-start:{{sdata.l184pt}}deg; --e-end:360deg;">
+                    <div class="inner">
+                        <p class="ilab">2-6 : {{sdata.l26}} students</p>
+                        <p class="ilab">7-12 : {{sdata.l612}} students</p>
+                        <p class="ilab">13-18 : {{sdata.l128}} students</p>
+                        <p class="ilab">19-24 : {{sdata.l184}} students</p>
+                        <p class="ilab">24+ : {{sdata.l24}} students</p>
+                    </div>
+                </div>
+                <div class="colors">
+                    <div class="c-cont">
+                        <div class="col p"></div>
+                        <p class="lab">2-6</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col s"></div>
+                        <p class="lab">7-12</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col t"></div>
+                        <p class="lab">13-18</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col f"></div>
+                        <p class="lab">19-24</p>
+                    </div>
+                    <div class="c-cont">
+                        <div class="col fv"></div>
+                        <p class="lab">24+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

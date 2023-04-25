@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 
 # Create your models here.
 YEAR = (
@@ -14,12 +15,10 @@ BRANCH = (
         ('EEE','EEE'),
     )
 PACKAGE = (
-    ('2.5-4.5','2.5-4.5'),
-    ('4.5-6','4.5-6'),
-    ('6-9','6-9'),
-    ('9-12','9-12'),
-    ('12-18','12-18'),
-    ('18-24','18-24'),
+    ('2-6','2-6'),
+    ('7-12','7-12'),
+    ('13-18','13-18'),
+    ('19-24','19-24'),
     ('more','more')
 )
 PLACEDON={
@@ -27,10 +26,12 @@ PLACEDON={
     ('IT(software)','IT(software)')
 }
 class Details(models.Model):
-    year = models.CharField(max_length=50, choices=YEAR )
+    year = models.CharField(max_length=50, choices=YEAR)
     branch = models.CharField(max_length=50, choices=BRANCH)
     placed = models.BooleanField(default=False)
     placed_on = models.CharField(max_length=50,choices=PLACEDON,blank=True)
     package = models.CharField(max_length=50, choices=PACKAGE, blank=True)
     
 
+class Years(models.Model):
+    year = models.CharField(max_length=50, choices=YEAR)

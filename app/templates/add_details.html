@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Student Data Form</title>
 	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 		body {
-			font-family: Arial, sans-serif;
+			font-family: "Poppins";
 			background-color: #f2f2f2;
 		}
 
@@ -23,7 +26,8 @@
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		}
 
-		input[type="text"], select {
+		input[type="text"],
+		select {
 			width: 100%;
 			padding: 12px 20px;
 			margin: 8px 0;
@@ -46,63 +50,83 @@
 		input[type="submit"]:hover {
 			background-color: #45a049;
 		}
+
+		.btn {
+			width: max-content;
+			height: max-content;
+			outline: none;
+			border: none;
+			background-color: #333;
+			color: #fff;
+			font-size: 13px;
+			font-family: "Poppins";
+			padding: 10px 20px;
+			margin-top: 15px;
+			margin-right: 10px;
+			text-decoration: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
 	</style>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <body>
 	<h1>Add Details</h1>
-<!-- placement.html -->
-<form method="post" action="{% url 'add_details' %}">
-	{% csrf_token %}
-	{% if form.errors %}
-	  <ul>
-		{% for field in form %}
-		  {% for error in field.errors %}
+	<!-- placement.html -->
+	<form method="post" action="{% url 'add_details' %}">
+		{% csrf_token %}
+		{% if form.errors %}
+		<ul>
+			{% for field in form %}
+			{% for error in field.errors %}
 			<li>{{ field.label }}: {{ error }}</li>
-		  {% endfor %}
-		{% endfor %}
-	  </ul>
-	{% endif %}
-	<div>
-	  <label for="{{ form.year.id_for_label }}">Year:</label>
-	  {{ form.year }}
-	</div>
-	<div>
-	  <label for="{{ form.branch.id_for_label }}">Branch:</label>
-	  {{ form.branch }}
-	</div>
-	<div>
-	  <label for="{{ form.placed.id_for_label }}">Placed:</label>
-	  {{ form.placed }}
-	</div>
-	<div>
-	  <label for="{{ form.placed_on.id_for_label }}">Placed_on:</label>
-	  {{ form.placed_on }}
-	</div>
-	<div>
-	  <label for="{{ form.package.id_for_label }}">Package:</label>
-	  {{ form.package }}
-	</div>
-	<button type="submit">Submit</button>
-  </form>
-  
+			{% endfor %}
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<div>
+			<label for="{{ form.year.id_for_label }}">Year:</label>
+			{{ form.year }}
+		</div>
+		<div>
+			<label for="{{ form.branch.id_for_label }}">Branch:</label>
+			{{ form.branch }}
+		</div>
+		<div>
+			<label for="{{ form.placed.id_for_label }}">Placed:</label>
+			{{ form.placed }}
+		</div>
+		<div>
+			<label for="{{ form.placed_on.id_for_label }}">Placed_on:</label>
+			{{ form.placed_on }}
+		</div>
+		<div>
+			<label for="{{ form.package.id_for_label }}">Package:</label>
+			{{ form.package }}
+		</div>
+		<div>
+			<button class="btn" type="submit">Submit</button>
+			<a class="btn" href="/charts/">View Analytics</a>
+		</div>
+	</form>
+
 	<script>
-		$(document).ready(function() {
-		  var placedField = $('#id_placed');
-		  var packageField = $('#id_package');
-		  var placed_onField = $('#id_placed_on');
-	
-		  packageField.prop('disabled', !placedField.is(':checked'));
-		  placed_onField.prop('disabled', !placedField.is(':checked'));
-		  
-		  placedField.change(function() {
-			packageField.prop('disabled', !$(this).is(':checked'));
-			placed_onField.prop('disabled', !$(this).is(':checked'));
-		  });
+		$(document).ready(function () {
+			var placedField = $('#id_placed');
+			var packageField = $('#id_package');
+			var placed_onField = $('#id_placed_on');
+
+			packageField.prop('disabled', !placedField.is(':checked'));
+			placed_onField.prop('disabled', !placedField.is(':checked'));
+
+			placedField.change(function () {
+				packageField.prop('disabled', !$(this).is(':checked'));
+				placed_onField.prop('disabled', !$(this).is(':checked'));
+			});
 		});
 	</script>
-	
-</body>
-</html>
 
+</body>
+
+</html>
